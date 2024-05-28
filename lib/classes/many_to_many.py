@@ -1,9 +1,11 @@
 class Article:
+    all = []
     def __init__(self, author, magazine, title):
         self.author = author
         self.magazine = magazine
         self.title = title
-        
+        Article.all.append(self)
+            
     @property 
     def title(self):
         return self._title
@@ -15,6 +17,7 @@ class Article:
         else:
             if isinstance(title, str) and 5 <= len(title) <= 50:
                 self._title = title
+
     
     @property
     def author(self):
@@ -24,6 +27,15 @@ class Article:
     def author(self, author):
         if isinstance(author, Author):
             self._author = author
+    
+    @property
+    def magazine(self):
+        return self._magazine
+    
+    @magazine.setter
+    def magazine(self,magazine):
+        if isinstance(magazine, Magazine):
+            self._magazine = magazine
 
 
 
@@ -31,7 +43,7 @@ class Article:
 class Author:
     def __init__(self, name):
         self.name = name
-    
+        self._articles = []
     @property
     def name(self):
         return self._name
@@ -44,10 +56,12 @@ class Author:
              if isinstance(name, str) and len(name) > 0:
                   self._name = name
 
-
+    
     def articles(self):
-        pass
-
+        return [article for article in Article.all if article.author == self._name]
+    
+    
+    
     def magazines(self):
         pass
 
