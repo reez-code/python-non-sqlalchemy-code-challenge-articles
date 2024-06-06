@@ -55,6 +55,7 @@ class Author:
         else:
              if isinstance(name, str) and len(name) > 0:
                   self._name = name
+                  
 
     
     def articles(self):
@@ -72,7 +73,8 @@ class Author:
         return new_article
 
     def topic_areas(self):
-        pass
+        topics = list(set(article.magazine.category for article in Article.all if article.author == self))
+        return topics if topics else None
 
 class Magazine:
     def __init__(self, name, category):
@@ -103,15 +105,21 @@ class Magazine:
         return list(unique_values)
 
     def contributors(self):
-         magazines = [article.author for article in Article.all if article.magazine == self]
-         return len(magazines)
+         magazines = list(set(article.author for article in Article.all if article.magazine == self))
+         return magazines
 
     def article_titles(self):
-        pass
+        titles = [article.title for article in Article.all if article.magazine == self]
+        return titles if titles else None
 
     def contributing_authors(self):
-        pass
-
+        authors = [article.author for article in Article.all if article.magazine == self]
+        author_count = {author: authors.count(author) for author in set(authors)}
+        contributing_authors = [author for author, count in author_count.items() if count > 2]
+        return contributing_authors if contributing_authors else None
+        
+        
+            
    
     
    
